@@ -43,7 +43,7 @@ public class GoogleController {
         return ResponseEntity.badRequest().build();
     }
 
-    @GetMapping(value = "/login/oauth2/code/google")
+    @GetMapping(value = "/google/login/oauth2")
     public ResponseEntity<GoogleLoginVO> redirectGoogleLogin(
             @RequestParam(value = "code") String authCode
     ) {
