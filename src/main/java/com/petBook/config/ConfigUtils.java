@@ -64,6 +64,9 @@ public class ConfigUtils {
     @Value("${kakao.login.url}")
     private String kakaoLoginUrl;
 
+    @Value("${kakao.auth.url}")
+    private String kakaoAuthUrl;
+
     public String kakaoInitUrl() {
         Map<String, Object> params = new HashMap<>();
         params.put("client_id", kakaoRestKey);

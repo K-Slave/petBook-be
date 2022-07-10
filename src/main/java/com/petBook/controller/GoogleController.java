@@ -44,7 +44,7 @@ public class GoogleController {
     }
 
     @GetMapping(value = "/google/login/oauth2")
-    public ResponseEntity<GoogleLoginVO> redirectGoogleLogin(
+    public ResponseEntity<Object> redirectGoogleLogin(
             @RequestParam(value = "code") String authCode
     ) {
         log.info("code : "+ authCode);
@@ -84,7 +84,7 @@ public class GoogleController {
             if(resultJson != null){
                 GoogleLoginVO googleLoginVO = objectMapper.readValue(resultJson, new TypeReference<GoogleLoginVO>() {});
 
-                return ResponseEntity.ok().body(googleLoginVO);
+                return ResponseEntity.ok().body(jwtToken);
             }else{
                 throw new Exception("Google OAuth failed!");
             }
