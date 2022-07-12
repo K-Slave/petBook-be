@@ -18,6 +18,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @Log4j2
@@ -84,7 +86,10 @@ public class GoogleController {
             if(resultJson != null){
                 GoogleLoginVO googleLoginVO = objectMapper.readValue(resultJson, new TypeReference<GoogleLoginVO>() {});
 
-                return ResponseEntity.ok().body(jwtToken);
+                Map<String, String> result = new HashMap<>();
+                result.put("token", jwtToken);
+
+                return ResponseEntity.ok().body(googleLoginResponse);
             }else{
                 throw new Exception("Google OAuth failed!");
             }

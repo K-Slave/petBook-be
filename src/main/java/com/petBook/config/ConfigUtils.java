@@ -67,6 +67,11 @@ public class ConfigUtils {
     @Value("${kakao.auth.url}")
     private String kakaoAuthUrl;
 
+    @Value("${kakao.kapi.host}")
+    private String kakaoKapiHost;
+
+
+
     public String kakaoInitUrl() {
         Map<String, Object> params = new HashMap<>();
         params.put("client_id", kakaoRestKey);
@@ -89,6 +94,12 @@ public class ConfigUtils {
 
     @Value("${naver.client.id}")
     private String naverClientId;
+
+    @Value("${naver.client.secret}")
+    private String naverClientSecret;
+
+    @Value("${naver.auth.url}")
+    private String naverAuthUrl;
 
     public String naverInitUrl() {
         Map<String, Object> params = new HashMap<>();
