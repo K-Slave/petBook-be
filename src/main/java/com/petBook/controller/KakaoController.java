@@ -5,9 +5,12 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.petBook.config.ConfigUtils;
-import com.petBook.vo.GoogleLoginRequest;
-import com.petBook.vo.KakaoLoginRequest;
 import com.petBook.vo.KakaoLoginResponse;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
@@ -16,14 +19,8 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
-
-import java.io.BufferedWriter;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,8 +33,22 @@ public class KakaoController {
         this.configUtils = configUtils;
     }
 
+    @ApiOperation(
+            value = "Kakao 로그인",
+            notes = "Kakao 로그인 페이지로 이동하는 메소드"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "토큰 발급 성공",
+                            content = @Content(
+                                    schema = @Schema(
+                                            implementation = KakaoLoginResponse.class
+                                    )))
+            })
     @GetMapping(value = "/kakao/login")
-    public ResponseEntity<Object> moveKakaoInitUrl() {
+    public ResponseEntity<KakaoLoginResponse> moveKakaoInitUrl() {
         String authUrl = configUtils.kakaoInitUrl();
         URI redirectUri = null;
         try {

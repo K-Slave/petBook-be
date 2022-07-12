@@ -19,14 +19,16 @@ public class SwaggerConfig {
                 .select()
                 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any())
-                .build();
+                .build()
+                .apiInfo(apiInfo());
+
     }
 
 
     private ApiInfo apiInfo(){
-        String description = "Welcom MaSpace";
+        String description = "petBook Spring Boot REST API";
         return new ApiInfoBuilder()
-                .title("MaSpace Spring Boot REST API")
+                .title("Welcom petBook")
                 .version("0.9")
                 .description(description)
                 .build();

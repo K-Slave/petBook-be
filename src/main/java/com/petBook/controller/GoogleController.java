@@ -8,6 +8,14 @@ import com.petBook.config.ConfigUtils;
 import com.petBook.vo.GoogleLoginRequest;
 import com.petBook.vo.GoogleLoginResponse;
 import com.petBook.vo.GoogleLoginVO;
+import com.petBook.vo.KakaoLoginResponse;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
@@ -23,15 +31,32 @@ import java.util.Map;
 
 @Controller
 @Log4j2
+
 public class GoogleController {
 
     private final ConfigUtils configUtils;
 
+
     public GoogleController(ConfigUtils configUtils) {
         this.configUtils = configUtils;
     }
+//    @Tag(name="소셜 로그인", description = "Google 소셜 로그인 API")
+    @ApiOperation(
+            value = "Google 로그인",
+            notes = "Google 로그인 페이지로 이동하는 메소드"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "토큰 발급 성공",
+                            content = @Content(
+                            schema = @Schema(
+                                    implementation = GoogleLoginResponse.class
+                    )))
+            })
     @GetMapping(value = "/google/login")
-    public ResponseEntity<Object> moveGoogleInitUrl() {
+    public ResponseEntity<GoogleLoginResponse> moveGoogleInitUrl() {
         String authUrl = configUtils.googleInitUrl();
         URI redirectUri = null;
         try {
@@ -45,6 +70,7 @@ public class GoogleController {
         return ResponseEntity.badRequest().build();
     }
 
+//    @Tag(name="소셜 로그인", description = "Google 소셜 로그인 API")
     @GetMapping(value = "/google/login/oauth2")
     public ResponseEntity<Object> redirectGoogleLogin(
             @RequestParam(value = "code") String authCode

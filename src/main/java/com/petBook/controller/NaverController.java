@@ -1,17 +1,15 @@
 package com.petBook.controller;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.petBook.config.ConfigUtils;
-import com.petBook.vo.NaverLoginRequest;
 import com.petBook.vo.NaverLoginResponse;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
@@ -28,9 +26,22 @@ public class NaverController {
     public NaverController(ConfigUtils configUtils) {
         this.configUtils = configUtils;
     }
-
+    @ApiOperation(
+            value = "Naver 로그인",
+            notes = "Naver 로그인 페이지로 이동하는 메소드"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "토큰 발급 성공",
+                            content = @Content(
+                                    schema = @Schema(
+                                            implementation = NaverLoginResponse.class
+                                    )))
+            })
     @GetMapping(value = "/naver/login")
-    public ResponseEntity<Object> moveNaverInitUrl() {
+    public ResponseEntity<NaverLoginResponse> moveNaverInitUrl() {
         String authUrl = configUtils.naverInitUrl();
         URI redirectUri = null;
         try {
